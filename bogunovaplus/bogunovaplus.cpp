@@ -82,3 +82,100 @@ void createCs(Cs& cs) { // Ссылка на оригинальный объек
     }
     cout << "Station '" << cs.name << "' added successfully!\n" << endl; // Успех
 }
+
+void displayAllObjects(const Pipe& pipe, const Cs& cs) { // Просмотр всех объектов 
+    cout << "\n*** ALL OBJECTS ***" << endl;
+
+    cout << "Pipe" << endl;
+    if (pipe.name.empty()) {
+        cout << "No pipe created." << endl;
+    }
+    else {
+        cout << "Name: " << pipe.name << endl;
+        cout << "Length: " << pipe.length << " km" << endl;
+        cout << "Diameter: " << pipe.diameter << " mm" << endl;
+        cout << "Under repair: " << (pipe.isUnderRepair ? "Yes" : "No") << endl;
+    }
+
+    cout << "\nCompressor Station" << endl;
+    if (cs.name.empty()) {
+        cout << "No station created." << endl;
+    }
+    else {
+        cout << "Name: " << cs.name << endl;
+        cout << "Total workshops: " << cs.totalWorkshops << endl;
+        cout << "Working workshops: " << cs.workingWorkshops << endl;
+        cout << "Efficiency: " << cs.efficiency << " %" << endl;
+    }
+    cout << "" << endl;
+}
+
+void editPipe(Pipe& pipe) {
+    if (pipe.name.empty()) { // Проверка наличия трубы
+        cout << "Error: Create a pipe first." << endl;
+        return;
+    }
+    cout << "\n --- Edit Pipe '" << pipe.name << " ---" << endl;
+    cout << "Current repair status: " << (pipe.isUnderRepair ? "Yes" : "No") << endl;
+    cout << "1. Start repair" << endl;
+    cout << "2. Stop repair" << endl;
+    cout << "0. Cancel" << endl;
+
+    int choice = getValidInput<int>("Select action: ");
+
+    switch (choice) { // Кейсы с разными сценариями для починки трубы
+    case 1:
+        pipe.isUnderRepair = true;
+        cout << "Repair started." << endl;
+        break;
+    case 2:
+        pipe.isUnderRepair = false;
+        cout << "Repair stopped." << endl;
+        break;
+    case 0:
+        cout << "Canceled." << endl;
+        break;
+    default:
+        cout << "Invalid choice." << endl;
+    }
+}
+
+void editCs(Cs& cs) {
+    if (cs.name.empty()) { // Проверка наличия компрессорной станции
+        cout << "Error: Create a station first." << endl;
+        return;
+    }
+    cout << "\n --- Edit Station '" << cs.name << " ---" << endl;
+    cout << "Working workshops: " << cs.workingWorkshops << " of " << cs.totalWorkshops << endl;
+    cout << "1. Start workshop" << endl;
+    cout << "2. Stop workshop" << endl;
+    cout << "0. Cancel" << endl;
+
+    int choice = getValidInput<int>("Select action: ");
+
+    switch (choice) {
+    case 1: // Кейсы для цехов в работе
+        if (cs.workingWorkshops < cs.totalWorkshops) {
+            cs.workingWorkshops++;
+            cout << "Workshop started. Now working: " << cs.workingWorkshops << " workshops." << endl;
+        }
+        else {
+            cout << "Error: All workshops are already working." << endl;
+        }
+        break;
+    case 2:
+        if (cs.workingWorkshops > 0) {
+            cs.workingWorkshops--;
+            cout << "Workshop stopped. Now working: " << cs.workingWorkshops << " workshops." << endl;
+        }
+        else {
+            cout << "Error: No working workshops to stop." << endl;
+        }
+        break;
+    case 0:
+        cout << "Canceled." << endl;
+        break;
+    default:
+        cout << "Invalid choice." << endl;
+    }
+}
