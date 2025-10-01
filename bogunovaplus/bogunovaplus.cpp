@@ -235,3 +235,59 @@ void loadFromFile(Pipe& pipe, Cs& cs, const string& filename = "data.txt") { // 
     cout << "Data loaded from file '" << filename << "'." << endl;
 }
 
+void displayMenu() { // Меню для пользователя
+    cout << "             MENU" << endl;
+    cout << "" << endl;
+    cout << "1. Add pipe" << endl;
+    cout << "2. Add station" << endl;
+    cout << "3. View all objects" << endl;
+    cout << "4. Edit pipe" << endl;
+    cout << "5. Edit station" << endl;
+    cout << "6. Save" << endl;
+    cout << "7. Load" << endl;
+    cout << "0. Exit" << endl;
+    cout << "" << endl;
+    cout << "Enter command number: ";
+}
+
+void processCommand(int command, Pipe& pipe, Cs& cs) { // Кейсы с вызовом функций
+    switch (command) {
+    case 1:
+        createPipe(pipe);
+        break;
+    case 2:
+        createCs(cs);
+        break;
+    case 3:
+        displayAllObjects(pipe, cs);
+        break;
+    case 4:
+        editPipe(pipe);
+        break;
+    case 5:
+        editCs(cs);
+        break;
+    case 6:
+        saveToFile(pipe, cs);
+        break;
+    case 7:
+        loadFromFile(pipe, cs);
+        break;
+    case 0:
+        cout << "Exit program." << endl;
+        exit(0);
+    default:
+        cout << "Command not recognized. Please select from menu." << endl;
+    }
+}
+
+int main() { // Main и вызов меню
+    Pipe myPipe;
+    Cs myCs;
+
+    while (true) {
+        displayMenu();
+        int command = getValidInput<int>("");
+        processCommand(command, myPipe, myCs);
+    }
+}
