@@ -179,3 +179,59 @@ void editCs(Cs& cs) {
         cout << "Invalid choice." << endl;
     }
 }
+
+void saveToFile(const Pipe& pipe, const Cs& cs, const string& filename = "data.txt") {
+    ofstream file(filename);
+    if (!file.is_open()) {  // Проверка открылся ли файл
+        cout << "Error: Cannot open file for writing." << endl;
+        return;
+    }
+
+    if (!pipe.name.empty()) { // Если есть данные в pipe
+        file << "PIPE" << endl;
+        file << pipe.name << endl;
+        file << pipe.length << endl;
+        file << pipe.diameter << endl;
+        file << pipe.isUnderRepair << endl;
+    }
+
+    if (!cs.name.empty()) { // Если есть данные в cs
+        file << "CS" << endl;
+        file << cs.name << endl;
+        file << cs.totalWorkshops << endl;
+        file << cs.workingWorkshops << endl;
+        file << cs.efficiency << endl;
+    }
+
+    file.close();
+    cout << "Data saved to file '" << filename << "'." << endl;
+}
+
+void loadFromFile(Pipe& pipe, Cs& cs, const string& filename = "data.txt") { // Загрузка из файла 
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cout << "Error: Cannot open file for reading." << endl;
+        return;
+    }
+
+    string line;
+    pipe.name = "";
+    cs.name = "";
+
+    while (getline(file, line)) {
+        if (line == "PIPE") {
+            getline(file, pipe.name);
+            file >> pipe.length >> pipe.diameter >> pipe.isUnderRepair;
+            file.ignore();
+        }
+        else if (line == "CS") {
+            getline(file, cs.name);
+            file >> cs.totalWorkshops >> cs.workingWorkshops >> cs.efficiency;
+            file.ignore();
+        }
+    }
+
+    file.close();
+    cout << "Data loaded from file '" << filename << "'." << endl;
+}
+
